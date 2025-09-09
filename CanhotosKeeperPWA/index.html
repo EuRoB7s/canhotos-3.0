@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Canhotos Keeper</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="assets/styles.css">
+  <meta name="theme-color" content="#5b21b6">
+  <meta name="description" content="Organize fotos de canhotos automaticamente por Loja, Data e Número. OCR com Tesseract.js.">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Canhotos Keeper</h1>
+    <nav>
+      <button id="nav-upload" class="btn">Adicionar</button>
+      <button id="nav-search" class="btn">Buscar</button>
+      <button id="nav-browse" class="btn">Navegar</button>
+      <button id="nav-backup" class="btn">Backup</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- UPLOAD / OCR -->
+    <section id="page-upload" class="page active">
+      <h2>Adicionar Canhotos</h2>
+      <p>Envie fotos (pode tirar direto da câmera). O app usa OCR para tentar achar automaticamente <strong>número do canhoto</strong>, <strong>data</strong> e <strong>loja</strong>. Você pode preencher manualmente para maior precisão.</p>
+
+      <div class="card">
+        <div class="row">
+          <label>Nº da Loja (opcional): <input id="inp-loja" type="number" min="1" step="1" placeholder="Ex.: 5"></label>
+          <label>Data (opcional): <input id="inp-data" type="date"></label>
+        </div>
+        <div class="row">
+          <label><input id="chk-ocr" type="checkbox" checked> Usar OCR para extrair dados dos arquivos</label>
+        </div>
+        <div class="row">
+          <input id="inp-files" type="file" accept="image/*" capture="environment" multiple>
+        </div>
+        <div class="row">
+          <button id="btn-process" class="btn primary">Processar e Salvar</button>
+        </div>
+      </div>
+
+      <div id="progress" class="progress hidden">
+        <div class="bar" id="progress-bar" style="width:0%"></div>
+        <div class="label" id="progress-label">0%</div>
+      </div>
+
+      <div id="preview-list" class="grid"></div>
+    </section>
+
+    <!-- SEARCH -->
+    <section id="page-search" class="page">
+      <h2>Buscar Canhoto</h2>
+      <div class="card">
+        <div class="row">
+          <label>Nº do Canhoto: <input id="q-num" type="text" placeholder="Ex.: 115310"></label>
+          <label>Data: <input id="q-date" type="date"></label>
+          <button id="btn-search" class="btn primary">Buscar</button>
+        </div>
+      </div>
+      <div id="search-results" class="grid"></div>
+    </section>
+
+    <!-- BROWSE -->
+    <section id="page-browse" class="page">
+      <h2>Navegar por Data e Loja</h2>
+      <div class="card">
+        <div class="row">
+          <label>Data: <input id="b-date" type="date"></label>
+          <label>Loja: <input id="b-loja" type="number" min="1" step="1" placeholder="Ex.: 5"></label>
+          <button id="btn-browse" class="btn primary">Mostrar</button>
+        </div>
+      </div>
+      <div id="browse-results" class="grid"></div>
+    </section>
+
+    <!-- BACKUP -->
+    <section id="page-backup" class="page">
+      <h2>Backup e Restauração</h2>
+      <div class="card">
+        <div class="row">
+          <button id="btn-export" class="btn">Exportar Backup (.json)</button>
+        </div>
+        <div class="row">
+          <input id="inp-import" type="file" accept="application/json">
+          <button id="btn-import" class="btn">Importar Backup</button>
+        </div>
+        <p class="muted">O backup inclui suas imagens e metadados. Pode ficar grande dependendo da quantidade de fotos.</p>
+      </div>
+    </section>
+
+    <!-- IMAGE MODAL -->
+    <dialog id="photo-modal">
+      <div class="modal-body">
+        <img id="modal-img" alt="Visualização do canhoto">
+        <div class="meta" id="modal-meta"></div>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-close-modal" class="btn">Fechar</button>
+      </div>
+    </dialog>
+  </main>
+
+  <footer>
+    <small>Funciona 100% no navegador. Dados salvos localmente (IndexedDB). OCR via <a href="https://tesseract.projectnaptha.com/" target="_blank" rel="noreferrer">Tesseract.js</a>.</small>
+  </footer>
+
+  <!-- Tesseract.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
